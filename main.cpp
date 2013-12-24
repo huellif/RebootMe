@@ -1,10 +1,16 @@
 #include <aknglobalmsgquery.h>
 
-class RestartSys //found in Symbian^3 sources, link against custrestartsys.lib
-{
+class RStarterSession : public RSessionBase
+    {
 public:
-    IMPORT_C static TInt RestartSystem();
+    IMPORT_C TInt Connect();
 
+public:
+    enum TResetReason
+        {
+        ELanguageSwitchReset = 100,     // A reset due to display language switch.
+        };
+    IMPORT_C void Reset( const TResetReason aReason );
 };
 
 LOCAL_C TAny ExeMainL() //TAny is Symbian's void, however compilers also accept void for native code
@@ -26,7 +32,10 @@ LOCAL_C TAny ExeMainL() //TAny is Symbian's void, however compilers also accept 
     CleanupStack::PopAndDestroy(pDlg);              //freeing CleanupStack
     if (iStatus.Int() == EAknSoftkeyYes)            //only if user selected yes
     {
-        RestartSys::RestartSystem();                //reboot the device
+        RStarterSession starter;
+        User::LeaveIfError(starter.Connect());
+        starter.Reset(RStarterSession::ELanguageSwitchReset);
+        starter.Close();
     }
 }
 

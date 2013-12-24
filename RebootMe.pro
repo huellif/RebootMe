@@ -9,7 +9,7 @@ symbian {
 
     TARGET.UID3 += 0x20071fdb #from Nokia Developer support
 
-    LIBS += -laknnotify -lcustrestartsys #reboot libary found in Symbian^3 sources
+    LIBS += -laknnotify -lStarterClient #reboot libary found in Symbian^3 sources
 
     TARGET.CAPABILITY += PowerMgmt #all reboot APIs need PowerMgmt
 
